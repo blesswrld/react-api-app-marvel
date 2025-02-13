@@ -24,6 +24,9 @@ class RandomChar extends Component {
             this.updateChar();
             this.timerId = setInterval(this.updateChar, 3000);
         }
+
+        // ломаем компонент для тестов
+        this.foo.bar = 0;
     }
 
     componentWillUnmount() {
