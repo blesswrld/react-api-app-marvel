@@ -107,7 +107,10 @@ class CharList extends Component {
                     style={{ display: charEnded ? "none" : "block" }}
                     onClick={() => this.onRequest(offset)}
                 >
-                    <div className="inner">load more</div>
+                    <div className="inner">
+                        {newItemLoading ? "Loading..." : "Load more"}{" "}
+                        {/* Меняем текст в зависимости от состояния загрузки */}
+                    </div>
                 </button>
             </div>
         );
