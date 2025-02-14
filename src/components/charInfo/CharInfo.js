@@ -1,5 +1,7 @@
 import { Component } from "react";
 
+import PropTypes from "prop-types";
+
 import MarvelService from "../../services/MarvelService";
 import Spinner from "../spinner/Spinner";
 import ErrorMessage from "../errorMessage/ErrorMessage";
@@ -126,5 +128,25 @@ const View = ({ char }) => {
         </>
     );
 };
+
+// PropTypes предоставляет ряд валидаторов, которые могут использоваться для проверки, что получаемые данные корректны
+
+// CharInfo.propTypes = {
+//     charId: PropTypes.string,
+// };
+
+// Определение defaultProps гарантирует, что this.props.name будет иметь значение, даже если оно не было указано родительским компонентом. Сначала применяются значения по умолчанию, заданные в defaultProps. После запускается проверка типов с помощью propTypes. Так что проверка типов распространяется и на значения по умолчанию.
+
+// class Greeting extends React.Component {
+//   static defaultProps = {
+//     name: 'Незнакомец'
+//   }
+
+//   render() {
+//     return (
+//       <div>Привет, {this.props.name}</div>
+//     )
+//   }
+// }
 
 export default CharInfo;
