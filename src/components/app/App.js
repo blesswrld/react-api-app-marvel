@@ -3,7 +3,7 @@ import RandomChar from "../randomChar/RandomChar";
 import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
 
-import ErrorBoundary from "../errorBoundary/ErrorBoundary";
+// import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 
 import decoration from "../../resources/img/vision.png";
 
@@ -12,9 +12,9 @@ const App = () => {
         <div className="app">
             <AppHeader />
             <main>
-                <ErrorBoundary>
-                    <RandomChar />
-                </ErrorBoundary>
+                {/* <ErrorBoundary> */}
+                <RandomChar />
+                {/* </ErrorBoundary> */}
                 <div className="char__content">
                     <CharList />
                     <CharInfo />

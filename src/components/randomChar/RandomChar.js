@@ -26,7 +26,7 @@ class RandomChar extends Component {
         }
 
         // ломаем компонент для тестов
-        this.foo.bar = 0;
+        // this.foo.bar = 0;
     }
 
     componentWillUnmount() {
