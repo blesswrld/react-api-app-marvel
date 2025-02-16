@@ -1,4 +1,4 @@
-import { Component } from "react";
+import React, { Component } from "react"; // исправляем импорт React
 
 import Spinner from "../spinner/Spinner";
 import ErrorMessage from "../errorMessage/ErrorMessage";
@@ -17,6 +17,9 @@ class CharList extends Component {
     };
 
     marvelService = new MarvelService();
+
+    // массив для хранения рефов для каждого персонажа
+    charRefs = [];
 
     componentDidMount() {
         this.onRequest(); // вызываем метод
@@ -43,6 +46,12 @@ class CharList extends Component {
             ended = true;
         }
 
+        // Создаем рефы для новых персонажей
+        const newRefs = newCharList.map(() => React.createRef());
+
+        // Объединяем старые рефы с новыми
+        this.charRefs = [...this.charRefs, ...newRefs];
+
         this.setState(({ offset, charList }) => ({
             charList: [...charList, ...newCharList],
             loading: false,
@@ -62,7 +71,7 @@ class CharList extends Component {
     // Этот метод создан для оптимизации,
     // чтобы не помещать такую конструкцию в метод render
     renderItems(arr) {
-        const items = arr.map((item) => {
+        const items = arr.map((item, index) => {
             let imgStyle = { objectFit: "cover" };
             if (
                 item.thumbnail ===
@@ -71,8 +80,29 @@ class CharList extends Component {
                 imgStyle = { objectFit: "unset" };
             }
 
+            // Функция для обработки фокуса
+            const handleFocus = () => {
+                this.charRefs[index].current.classList.add(
+                    "char__item_selected"
+                );
+            };
+
+            // Функция для обработки потери фокуса
+            const handleBlur = () => {
+                this.charRefs[index].current.classList.remove(
+                    "char__item_selected"
+                );
+            };
+
             return (
-                <li className="char__item" key={item.id}>
+                <li
+                    className="char__item"
+                    key={item.id}
+                    ref={this.charRefs[index]} // Привязываем реф к каждому персонажу
+                    onFocus={handleFocus} // Добавляем обработчик фокуса
+                    onBlur={handleBlur} // Добавляем обработчик потери фокуса
+                    tabIndex="0" // Устанавливаем tabIndex, чтобы элемент можно было выделить с помощью Tab
+                >
                     <img
                         src={item.thumbnail}
                         alt={item.name}

@@ -1,6 +1,6 @@
 import { Component } from "react";
 
-import PropTypes from "prop-types"; // Импортируем PropTypes
+// import PropTypes from "prop-types"; // Импортируем PropTypes
 
 import AppHeader from "../appHeader/AppHeader";
 import RandomChar from "../randomChar/RandomChar";
