@@ -31,7 +31,6 @@
         &_selected {
             box-shadow: 0 5px 20px $main-color;
             transform: translateY(-8px);
-            border: none;
         }
     }
     &__name {
@@ -40,11 +39,5 @@
         line-height: 29px;
         text-transform: uppercase;
         color: #fff;
-    }
-    .loading-text {
-        font-size: 18px;
-        color: #888;
-        text-align: center;
-        padding: 10px;
     }
 }

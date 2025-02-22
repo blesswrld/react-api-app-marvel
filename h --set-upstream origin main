@@ -1,0 +1,17 @@
+[33mcommit c3b54b6ec5ef5b26cf2c1a6ffb92854c5cec91b0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: blesswrld <roninfortnite71@gmail.com>
+Date:   Mon Feb 10 21:56:14 2025 +0300
+
+    work with marvel character-api
+
+[33mcommit a96f5967df56784afb3b2f6e8654a2dbea9bcb7f[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: blesswrld <roninfortnite71@gmail.com>
+Date:   Sun Feb 9 21:23:03 2025 +0300
+
+    create app, create simple api requests
+
+[33mcommit 8996b8ac83a7f126925e9228ff837c995ba0afb3[m
+Author: Tamerlan <roninfortnite71@gmail.com>
+Date:   Sun Feb 9 20:27:07 2025 +0300
+
+    Initial commit
