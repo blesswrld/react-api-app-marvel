@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+
 import Spinner from "../spinner/Spinner";
 import ErrorMessage from "../errorMessage/ErrorMessage";
 import useMarvelService from "../../services/MarvelService"; // Импортируем наш сервис
 import "./comicsList.scss";
 
-import uw from "../../resources/img/UW.png";
-import xMen from "../../resources/img/x-men.png";
+// import uw from "../../resources/img/UW.png";
 
 const ComicsList = () => {
     const [comicsList, setComicsList] = useState([]); // Состояние для списка комиксов
@@ -45,15 +46,16 @@ const ComicsList = () => {
     };
 
     // Функция для обработки ошибки изображения и замены его на запасное
-    const handleImageError = (e) => {
-        e.target.src = uw; // В случае ошибки подгрузки, ставим запасное изображение
-    };
+    // const handleImageError = (e) => {
+    //     e.target.src = uw; // В случае ошибки подгрузки, ставим запасное изображение
+    // };
 
     // Рендерим элементы списка
+    // (апишки марвел для комиксов не работают, поэтому при желании их можно заменить на статичное изображение, используя метод handleImageError)
     const renderItems = (arr) => {
         return arr.map((item, i) => (
             <li key={i} className="comics__item">
-                <a href={item.urls?.[0]?.url || "#"}>
+                <Link to={`/comics/${item.id}`}>
                     {" "}
                     {/* Добавлена проверка на urls[0]?.url */}
                     <img
@@ -64,7 +66,7 @@ const ComicsList = () => {
                         }
                         alt={item.title || "Comic"}
                         className="comics__item-img"
-                        onError={handleImageError} // Обработчик ошибки для подмены изображения
+                        // onError={handleImageError} // Обработчик ошибки для подмены изображения
                     />
                     <div className="comics__item-name">
                         {item.title || "No Title"}
@@ -72,7 +74,7 @@ const ComicsList = () => {
                     <div className="comics__item-price">
                         {item.price || "Not available"}
                     </div>
-                </a>
+                </Link>
             </li>
         ));
     };

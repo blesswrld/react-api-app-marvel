@@ -14,7 +14,7 @@ const AppHeader = () => {
                     <li>
                         <NavLink
                             className={({ isActive }) =>
-                                isActive ? "active" : ""
+                                isActive ? "active" : "inherit"
                             }
                             to="/"
                         >
@@ -25,7 +25,7 @@ const AppHeader = () => {
                     <li>
                         <NavLink
                             className={({ isActive }) =>
-                                isActive ? "active" : ""
+                                isActive ? "active" : "inherit"
                             }
                             to="/comics"
                         >
