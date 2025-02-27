@@ -1,5 +1,5 @@
 import ErrorMessage from "../errorMessage/ErrorMessage";
-import { Link } from "react-router-dom"; // импортируем link из react-router-dom
+import { Link } from "react-router-dom";
 
 const Page404 = () => {
     return (
@@ -23,7 +23,7 @@ const Page404 = () => {
                     fontSize: "26px",
                     marginTop: "30px",
                 }}
-                to="/" // Добавляем путь до главной страницы
+                to="/"
             >
                 Back to main page
             </Link>

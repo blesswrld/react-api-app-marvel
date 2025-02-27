@@ -60,7 +60,7 @@ const RandomChar = () => {
 
 const View = ({ char }) => {
     if (!char) {
-        return <div>Loading...</div>; // Показываем текст, если char не загружен
+        return <div>Loading...</div>;
     }
 
     const { name, description, thumbnail, homepage, wiki } = char;

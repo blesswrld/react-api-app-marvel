@@ -23,6 +23,9 @@ const CharList = (props) => {
     };
 
     const onCharListLoaded = (newCharList) => {
+        // const { logger, secondLog } = await import("./someFunc"); // динамический экспорт в js
+        // logger();
+
         let ended = false;
         if (newCharList.length < 9) {
             ended = true;
@@ -87,6 +90,12 @@ const CharList = (props) => {
 
     const errorMessage = error ? <ErrorMessage /> : null;
     const spinner = loading && !newItemLoading ? <Spinner /> : null;
+
+    // if (loading) {
+    //     import("./someFunc")
+    //         .then((obj) => obj.default()) // динамический импорт по умолчанию в js
+    //         .catch();
+    // }
 
     return (
         <div className="char__list">

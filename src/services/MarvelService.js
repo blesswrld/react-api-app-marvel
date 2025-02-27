@@ -58,7 +58,7 @@ const useMarvelService = () => {
             language: comics.textObjects[0]?.language || "en-us",
             price: comics.prices[0].price
                 ? `${comics.prices[0].price}$`
-                : "not available", // исправление небольшой опечатки в слове
+                : "not available",
         };
     };
 
