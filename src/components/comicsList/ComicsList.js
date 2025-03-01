@@ -3,46 +3,42 @@ import { Link } from "react-router-dom";
 
 import Spinner from "../spinner/Spinner";
 import ErrorMessage from "../errorMessage/ErrorMessage";
-import useMarvelService from "../../services/MarvelService"; // Импортируем наш сервис
+import useMarvelService from "../../services/MarvelService";
 import "./comicsList.scss";
 
 // import uw from "../../resources/img/UW.png";
 
 const ComicsList = () => {
-    const [comicsList, setComicsList] = useState([]); // Состояние для списка комиксов
-    const [loading, setLoading] = useState(false); // Состояние загрузки
-    const [error, setError] = useState(null); // Состояние ошибки
-    const [offset, setOffset] = useState(0); // Смещение для подгрузки
-    const [charEnded, setCharEnded] = useState(false); // Флаг окончания подгрузки
+    const [comicsList, setComicsList] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [offset, setOffset] = useState(0);
+    const [charEnded, setCharEnded] = useState(false);
 
-    // Используем наш кастомный хук для получения данных
     const { getAllComics } = useMarvelService();
 
-    // Функция для подгрузки комиксов
     const fetchComics = async (offset) => {
         setLoading(true);
         setError(null);
         try {
-            const newComics = await getAllComics(offset); // Получаем новые комиксы
-            setComicsList((prevList) => [...prevList, ...newComics]); // Добавляем новые комиксы к старым
+            const newComics = await getAllComics(offset);
+            setComicsList((prevList) => [...prevList, ...newComics]);
             if (newComics.length < 8) {
-                setCharEnded(true); // Если получено меньше 8 комиксов, значит подгрузка завершена
+                setCharEnded(true);
             }
         } catch (e) {
-            setError("Error loading comics"); // Обработка ошибок
+            setError("Error loading comics");
         } finally {
             setLoading(false);
         }
     };
 
-    // Подгружаем комиксы при изменении смещения
     useEffect(() => {
         fetchComics(offset);
     }, [offset]);
 
-    // Функция для подгрузки новых комиксов
     const loadMoreComics = () => {
-        setOffset((prevOffset) => prevOffset + 8); // Увеличиваем offset для подгрузки (на 8)
+        setOffset((prevOffset) => prevOffset + 8);
     };
 
     // Функция для обработки ошибки изображения и замены его на запасное
@@ -50,14 +46,12 @@ const ComicsList = () => {
     //     e.target.src = uw; // В случае ошибки подгрузки, ставим запасное изображение
     // };
 
-    // Рендерим элементы списка
     // (апишки марвел для комиксов не работают, поэтому при желании их можно заменить на статичное изображение, используя метод handleImageError)
     const renderItems = (arr) => {
         return arr.map((item, i) => (
             <li key={i} className="comics__item">
                 <Link to={`/comics/${item.id}`}>
                     {" "}
-                    {/* Добавлена проверка на urls[0]?.url */}
                     <img
                         src={
                             item.thumbnail?.path +
@@ -81,12 +75,8 @@ const ComicsList = () => {
 
     return (
         <div className="comics__list">
-            <ul className="comics__grid">
-                {renderItems(comicsList)} {/* Рендерим список комиксов */}
-            </ul>
-            {loading && <Spinner />}{" "}
-            {/* Показываем спиннер во время загрузки */}
-            {error && <ErrorMessage />} {/* Показываем сообщение об ошибке */}
+            <ul className="comics__grid">{renderItems(comicsList)}</ul>
+            {loading && <Spinner />} {error && <ErrorMessage />}
             {!charEnded && (
                 <button
                     className="button button__main button__long"
