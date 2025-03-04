@@ -3,13 +3,31 @@ import { useHttp } from "../hooks/http.hook";
 const useMarvelService = () => {
     const { loading, request, error, clearError } = useHttp();
 
-    const _apiBase = "https://gateway.marvel.com/v1/public/";
+    const _apiBase = "https://gateway.marvel.com:443/v1/public/";
+    // ЗДЕСЬ БУДЕТ ВАШ КЛЮЧ, ЭТОТ КЛЮЧ МОЖЕТ НЕ РАБОТАТЬ
     const _apiKey = "apikey=6055b9373f97c4317e477f9dfd6e43d5";
     const _baseOffset = 210;
 
     const getAllCharacters = async (offset = _baseOffset) => {
         const res = await request(
             `${_apiBase}characters?limit=9&offset=${offset}&${_apiKey}`
+        );
+        return res.data.results.map(_transformCharacter);
+    };
+
+    // Вариант модификации готового метода для поиска по имени.
+    // Вызывать его можно вот так: getAllCharacters(null, name)
+
+    // const getAllCharacters = async (offset = _baseOffset, name = '') => {
+    //     const res = await request(`${_apiBase}characters?limit=9&offset=${offset}${name ? `&name=${name}` : '' }&${_apiKey}`);
+    //     return res.data.results.map(_transformCharacter);
+    // }
+
+    // Или можно создать отдельный метод для поиска по имени
+
+    const getCharacterByName = async (name) => {
+        const res = await request(
+            `${_apiBase}characters?name=${name}&${_apiKey}`
         );
         return res.data.results.map(_transformCharacter);
     };
@@ -39,8 +57,8 @@ const useMarvelService = () => {
                 ? `${char.description.slice(0, 210)}...`
                 : "There is no description for this character",
             thumbnail: char.thumbnail.path + "." + char.thumbnail.extension,
-            homepage: char.urls[0]?.url,
-            wiki: char.urls[1]?.url,
+            homepage: char.urls[0].url,
+            wiki: char.urls[1].url,
             comics: char.comics.items,
         };
     };
@@ -66,6 +84,7 @@ const useMarvelService = () => {
         error,
         clearError,
         getAllCharacters,
+        getCharacterByName,
         getCharacter,
         getAllComics,
         getComic,

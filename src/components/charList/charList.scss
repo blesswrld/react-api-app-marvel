@@ -30,7 +30,7 @@
         }
         &_selected {
             box-shadow: 0 5px 20px $main-color;
-            transform: translateY(-16px);
+            transform: translateY(-8px);
             transition: transform 0.3s ease-in-out;
         }
         &-enter {
