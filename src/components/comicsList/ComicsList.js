@@ -8,83 +8,87 @@ import "./comicsList.scss";
 
 // import uw from "../../resources/img/UW.png";
 
+const setContent = (process, Component, newItemLoading) => {
+    switch (process) {
+        case "waiting":
+            return <Spinner />;
+            break;
+        case "loading":
+            return newItemLoading ? <Component /> : <Spinner />;
+            break;
+        case "confirmed":
+            return <Component />;
+            break;
+        case "error":
+            return <ErrorMessage />;
+            break;
+        default:
+            throw new Error("Unexpected process state");
+    }
+};
+
 const ComicsList = () => {
     const [comicsList, setComicsList] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [newItemLoading, setnewItemLoading] = useState(false);
     const [offset, setOffset] = useState(0);
-    const [charEnded, setCharEnded] = useState(false);
+    const [comicsEnded, setComicsEnded] = useState(false);
 
-    const { getAllComics } = useMarvelService();
-
-    const fetchComics = async (offset) => {
-        setLoading(true);
-        setError(null);
-        try {
-            const newComics = await getAllComics(offset);
-            setComicsList((prevList) => [...prevList, ...newComics]);
-            if (newComics.length < 8) {
-                setCharEnded(true);
-            }
-        } catch (e) {
-            setError("Error loading comics");
-        } finally {
-            setLoading(false);
-        }
-    };
+    const { loading, error, getAllComics, process, setProcess } =
+        useMarvelService();
 
     useEffect(() => {
-        fetchComics(offset);
-    }, [offset]);
+        onRequest(offset, true);
+    }, []);
 
-    const loadMoreComics = () => {
-        setOffset((prevOffset) => prevOffset + 8);
+    const onRequest = (offset, initial) => {
+        initial ? setnewItemLoading(false) : setnewItemLoading(true);
+        getAllComics(offset)
+            .then(onComicsListLoaded)
+            .then(() => setProcess("confirmed"));
     };
 
-    // Функция для обработки ошибки изображения и замены его на запасное
-    // const handleImageError = (e) => {
-    //     e.target.src = uw; // В случае ошибки подгрузки, ставим запасное изображение
-    // };
-
-    // (апишки марвел для комиксов не работают, поэтому при желании их можно заменить на статичное изображение, используя метод handleImageError)
-    const renderItems = (arr) => {
-        return arr.map((item, i) => (
-            <li key={i} className="comics__item">
-                <Link to={`/comics/${item.id}`}>
-                    {" "}
-                    <img
-                        src={
-                            item.thumbnail?.path +
-                            "." +
-                            item.thumbnail?.extension
-                        }
-                        alt={item.title || "Comic"}
-                        className="comics__item-img"
-                        // onError={handleImageError} // Обработчик ошибки для подмены изображения
-                    />
-                    <div className="comics__item-name">
-                        {item.title || "No Title"}
-                    </div>
-                    <div className="comics__item-price">
-                        {item.price || "Not available"}
-                    </div>
-                </Link>
-            </li>
-        ));
+    const onComicsListLoaded = (newComicsList) => {
+        let ended = false;
+        if (newComicsList.length < 8) {
+            ended = true;
+        }
+        setComicsList([...comicsList, ...newComicsList]);
+        setnewItemLoading(false);
+        setOffset(offset + 8);
+        setComicsEnded(ended);
     };
+
+    function renderItems(arr) {
+        const items = arr.map((item, i) => {
+            return (
+                <li className="comics__item" key={i}>
+                    <a href="#">
+                        <img
+                            src={item.thumbnail}
+                            alt={item.title}
+                            className="comics__item-img"
+                        />
+                        <div className="comics__item-name">{item.title}</div>
+                        <div className="comics__item-price">{item.price}</div>
+                    </a>
+                </li>
+            );
+        });
+
+        return <ul className="comics__grid">{items}</ul>;
+    }
 
     return (
         <div className="comics__list">
-            <ul className="comics__grid">{renderItems(comicsList)}</ul>
-            {loading && <Spinner />} {error && <ErrorMessage />}
-            {!charEnded && (
-                <button
-                    className="button button__main button__long"
-                    onClick={loadMoreComics}
-                >
-                    <div className="inner">Load More</div>
-                </button>
-            )}
+            {setContent(process, () => renderItems(comicsList), newItemLoading)}
+            <button
+                disabled={newItemLoading}
+                style={{ display: comicsEnded ? "none" : "block" }}
+                className="button button__main button__long"
+                onClick={() => onRequest(offset)}
+            >
+                <div className="inner">load more</div>
+            </button>
         </div>
     );
 };
